@@ -17,3 +17,4 @@ macro_rules! testcase {
 }
 
 mod MaximumLengthOfPairChain;
+mod WiggleSubsequence;
