@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Auto",
+            "type": "auto-debug",
+            "request": "launch",
+            "map": {
+                "*.ts": "Node: Run Current File",
+                "*.rs": "Rust: Test Current File",
+            }
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Node: Run Current File",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true,
+            "program": "${file}",
+            "outFiles": [
+                "${workspaceFolder}/.build/tsc/**/*.js"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Rust: Test Current File",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--target-dir=build/rust/target",
+                ],
+            },
+            "args": [],
+            "sourceLanguages": ["rust"]
+        },
+    ]
+}

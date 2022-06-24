@@ -1,0 +1,4 @@
+{
+    "rust-analyzer.runnables.extraArgs": ["--target-dir", "build/rust/target"],
+    "rust-analyzer.checkOnSave.extraArgs": ["--target-dir", "build/rust/target"],
+}
