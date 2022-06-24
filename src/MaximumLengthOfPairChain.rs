@@ -20,20 +20,21 @@ impl Solution {
 
         let len = pairs.len();
         let mut dp = vec![1 as i32; len];
+
+        let mut ans = 0;
         for i in 1..len {
             let p = &pairs[i];
             let mut dpi = 1;
             for j in 0..i {
-                let mut temp = dp[j];
                 if p[0] > pairs[j][1] { // Chain can connect
-                    temp += 1;
+                    dpi = dpi.max(dp[j] + 1);
                 }
-                dpi = std::cmp::max(dpi, temp);
             }
             dp[i] = dpi;
+            ans = ans.max(dpi)
         }
 
-        dp[len - 1]
+        ans
     }
 
     pub fn find_longest_chain_3(mut pairs: Vec<Vec<i32>>) -> i32 {
