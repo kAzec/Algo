@@ -35,6 +35,26 @@ impl Solution {
 
         dp[len - 1]
     }
+
+    pub fn find_longest_chain_3(mut pairs: Vec<Vec<i32>>) -> i32 {
+        pairs.sort_by_key(|a| a[1]);
+
+        let mut len = 0;
+        let mut dp = vec![];
+
+        for p in pairs {
+            let (left, right) = (p[0], p[1]);
+            let i = dp.binary_search(&left).unwrap_or_else(|x| x);
+            if i == len {
+                len += 1;
+                dp.push(right);
+            } else {
+                dp[i] = dp[i].min(right);
+            }
+        }
+
+        len as i32
+    }
 }
 
 #[cfg(test)]
@@ -44,8 +64,10 @@ mod Tests {
     fn tester(f: impl Fn(Vec<Vec<i32>>) -> i32) {
         assert_eq!(f(vec![vec![1,2],vec![2,3],vec![3,4]]), 2);
         assert_eq!(f(vec![vec![1,2],vec![7,8],vec![4,5]]), 3);
+        assert_eq!(f(vec![vec![-6,9],vec![1,6],vec![8,10],vec![-1,4],vec![-6,-2],vec![-9,8],vec![-5,3],vec![0,3]]), 3);
     }
 
     testcase!(find_longest_chain);
     testcase!(find_longest_chain_2);
+    testcase!(find_longest_chain_3);
 }
