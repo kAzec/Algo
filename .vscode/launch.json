@@ -9,19 +9,20 @@
             "type": "auto-debug",
             "request": "launch",
             "map": {
-                "*.ts": "Node: Run Current File",
-                "*.rs": "Rust: Test Current File",
+                "*.ts": "Node: Run",
+                "*.rs": "Rust: Test",
             }
         },
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Node: Run Current File",
+            "name": "Node: Run",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "sourceMaps": true,
             "program": "${file}",
+            "preLaunchTask": "${defaultBuildTask}",
             "outFiles": [
                 "${workspaceFolder}/.build/tsc/**/*.js"
             ],
@@ -30,12 +31,9 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Rust: Test Current File",
+            "name": "Rust: Test",
             "cargo": {
-                "args": [
-                    "test",
-                    "--target-dir=build/rust/target",
-                ],
+                "args": ["test"],
             },
             "args": [],
             "sourceLanguages": ["rust"]
