@@ -1,4 +1,4 @@
-use std::ops::{Index, IndexMut};
+    use std::{ops::{Index, IndexMut}, collections::HashMap};
 
 use crate::*;
 
@@ -16,6 +16,28 @@ impl Solution {
         } else {
             0
         }
+    }
+
+    pub fn find_target_sum_ways_2(nums: Vec<i32>, S: i32) -> i32 {
+        let mut cache = HashMap::<i64, i32>::new();
+        Self::find_target_sum_ways_2_backtrack(&nums, S, 0, 0, &mut cache)
+    }
+
+    fn find_target_sum_ways_2_backtrack(nums: &Vec<i32>, S: i32, i: usize, s: i32, cache: &mut HashMap::<i64, i32>) -> i32 {
+        if i == nums.len() {
+            // Reaching the end of backtracking
+            return if s == S { 1 } else { 0 }
+        }
+
+        let key = (i as i64) | ((s as i64) << 32);
+        if let Some(cached_ways) = cache.get(&key) {
+            return *cached_ways;
+        };
+
+        let ways = Self::find_target_sum_ways_2_backtrack(nums, S, i + 1, s + nums[i], cache)
+            + Self::find_target_sum_ways_2_backtrack(nums, S, i + 1, s - nums[i], cache);
+        cache.insert(key, ways);
+        return ways;
     }
 }
 
@@ -53,7 +75,7 @@ impl IndexMut<i32> for DP {
 }
 
 impl Solution {
-    pub fn find_target_sum_ways_2(nums: Vec<i32>, target: i32) -> i32 {
+    pub fn find_target_sum_ways_3(nums: Vec<i32>, target: i32) -> i32 {
         let mut sum = nums[0];
 
         let (mut prev, mut cur) = (DP::new(), DP::new());
@@ -71,7 +93,7 @@ impl Solution {
         prev[target]
     }
 
-    pub fn find_target_sum_ways_3(nums: Vec<i32>, target: i32) -> i32 {
+    pub fn find_target_sum_ways_4(nums: Vec<i32>, target: i32) -> i32 {
         let max_sum: i32 = nums.iter().sum();
         if max_sum < target.abs() {
             return 0
@@ -96,7 +118,7 @@ impl Solution {
         cur[(target + max_sum) as usize]
     }
 
-    pub fn find_target_sum_ways_4(nums: Vec<i32>, target: i32) -> i32 {
+    pub fn find_target_sum_ways_5(nums: Vec<i32>, target: i32) -> i32 {
         // Reaching target is the same as reaching -target
         let target = target.abs();
         let max_sum: i32 = nums.iter().sum();
@@ -131,10 +153,10 @@ mod Tests {
     use super::*;
 
     fn tester(f: impl Fn(Vec<i32>, i32) -> i32) {
-        // assert_eq!(f(vec![1], 1), 1);
-        // assert_eq!(f(vec![1], -2), 0);
-        // assert_eq!(f(vec![1, 0], 1), 2);
-        // assert_eq!(f(vec![1000], 1000), 1);
+        assert_eq!(f(vec![1], 1), 1);
+        assert_eq!(f(vec![1], -2), 0);
+        assert_eq!(f(vec![1, 0], 1), 2);
+        assert_eq!(f(vec![1000], 1000), 1);
         assert_eq!(f(vec![1, 999], 998), 1);
         assert_eq!(f(vec![1,1,1,1,1], 3), 5);
     }
@@ -143,4 +165,5 @@ mod Tests {
     testcase!(find_target_sum_ways_2);
     testcase!(find_target_sum_ways_3);
     testcase!(find_target_sum_ways_4);
+    testcase!(find_target_sum_ways_5);
 }
