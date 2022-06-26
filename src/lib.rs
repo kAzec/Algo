@@ -19,3 +19,4 @@ macro_rules! testcase {
 mod MaximumLengthOfPairChain;
 mod WiggleSubsequence;
 mod TargetSum;
+mod BestTimeBnSWithTRXFee;
