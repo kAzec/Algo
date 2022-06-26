@@ -18,24 +18,24 @@ impl Solution {
         }
     }
 
-    pub fn find_target_sum_ways_2(nums: Vec<i32>, S: i32) -> i32 {
+    pub fn find_target_sum_ways_2(nums: Vec<i32>, target: i32) -> i32 {
         let mut cache = HashMap::<i64, i32>::new();
-        Self::find_target_sum_ways_2_backtrack(&nums, S, 0, 0, &mut cache)
+        Self::find_target_sum_ways_2_backtrack(&nums, 0, target, &mut cache)
     }
 
-    fn find_target_sum_ways_2_backtrack(nums: &Vec<i32>, S: i32, i: usize, s: i32, cache: &mut HashMap::<i64, i32>) -> i32 {
+    fn find_target_sum_ways_2_backtrack(nums: &Vec<i32>, i: usize, remain: i32, cache: &mut HashMap::<i64, i32>) -> i32 {
         if i == nums.len() {
             // Reaching the end of backtracking
-            return if s == S { 1 } else { 0 }
+            return if remain == 0 { 1 } else { 0 }
         }
 
-        let key = (i as i64) | ((s as i64) << 32);
+        let key = (i as i64) | ((remain as i64) << 32);
         if let Some(cached_ways) = cache.get(&key) {
             return *cached_ways;
         };
 
-        let ways = Self::find_target_sum_ways_2_backtrack(nums, S, i + 1, s + nums[i], cache)
-            + Self::find_target_sum_ways_2_backtrack(nums, S, i + 1, s - nums[i], cache);
+        let ways = Self::find_target_sum_ways_2_backtrack(nums, i + 1, remain - nums[i], cache)
+            + Self::find_target_sum_ways_2_backtrack(nums, i + 1, remain + nums[i], cache);
         cache.insert(key, ways);
         return ways;
     }
