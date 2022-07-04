@@ -50,7 +50,7 @@ function LIS(nums: number[]): number[] {
     return lis
 }
 
-function bitsect_left(n: number, nums: number[]): number {
+function bisect_left(n: number, nums: number[]): number {
     var mid = 0
     var lower = 0, upper = nums.length - 1
     do {
@@ -78,7 +78,7 @@ function lengthOfLIS2(nums: number[]): number {
             dp.push(n)
             dl += 1
         } else {
-            dp[bitsect_left(n, dp)] = n
+            dp[bisect_left(n, dp)] = n
         }
     }
     return dp.length
