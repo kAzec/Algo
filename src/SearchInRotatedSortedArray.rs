@@ -36,7 +36,8 @@ impl Solution {
                 } else {
                     lo = mid + 1;
                 }
-            } else if mn <= hn {
+            } else {
+                assert!(mn <= hn);
                 if mn < target && target <= hn { // target is in nums[mid..=hi]
                     println!("Search target {} in nums[{}..={}]", target, mid, hi);
                     return if let Some(pos) = Self::bisect_left(&nums[mid..=hi], target) {
@@ -45,8 +46,6 @@ impl Solution {
                 } else {
                     hi = mid - 1;
                 }
-            } else {
-                break
             }
         }
         -1
@@ -66,14 +65,8 @@ impl Solution {
                 return true
             }
 
-            // if ln == hn {
-            //     if mn == ln {
-            //         lo += 1;
-            //     } else if mn > ln {
-            //         // bisect in lo..mid
-            //     } else if mn < hn {
-            //         // bisect in mid..=hi
-            //     }
+            // if ln < hn { // the current slice is not rotated
+            //     // bisect in lo..=hi
             // } else if (ln > hn) {
             //     if mn >= ln {
             //         // bisect in lo..mid
@@ -81,8 +74,14 @@ impl Solution {
             //         assert!(mn <= hn);
             //         // bisect in mid..=hi
             //     }
-            // } else { // ln < hn, which means the current slice is not rotated
-            //     // bisect in
+            // } else { // ln == hn
+            //     if mn == ln {
+            //         lo += 1;
+            //     } else if mn > ln {
+            //         // bisect in lo..mid
+            //     } else { // mn < hn
+            //         // bisect in mid..=hi
+            //     }
             // }
 
             if ln < hn { // The slice is not rotated
@@ -97,18 +96,43 @@ impl Solution {
                 } else {
                     lo = mid + 1;
                 }
-            } else if mn <= hn {
+            } else {
+                assert!(mn <= hn);
                 if mn < target && target <= hn { // target is in nums[mid..=hi]
                     // println!("Search target {} in nums[{}..={}]", target, mid, hi);
                     return Self::bisect_left(&nums[mid..=hi], target).is_some()
                 } else {
                     hi = mid - 1;
                 }
-            } else {
-                panic!("Should be unreachable.");
             }
         }
         false
+    }
+
+    pub fn search_ii_2(nums: Vec<i32>, target: i32) -> bool {
+        return Self::search_ii_2_helper(&nums, target);
+    }
+
+    pub fn search_ii_2_helper(slice: &[i32], target: i32) -> bool {
+        if slice.is_empty() {
+            false
+        } else if slice.len() == 1 {
+            slice[0] == target
+        } else {
+            let mid = slice.len() / 2;
+            if target == slice[mid] {
+                true
+            } else if slice[0] < slice[slice.len() - 1] {
+                if target < slice[mid] {
+                    Self::search_ii_2_helper(&slice[0..mid], target)
+                } else {
+                    Self::search_ii_2_helper(&slice[mid..slice.len()], target)
+                }
+            } else {
+                Self::search_ii_2_helper(&slice[0..mid], target)
+                || Self::search_ii_2_helper(&slice[mid+1..slice.len()], target)
+            }
+        }
     }
 }
 
@@ -132,4 +156,5 @@ mod Tests {
 
     testcase!(tester, search);
     testcase!(tester_ii, search_ii);
+    testcase!(tester_ii, search_ii_2);
 }
