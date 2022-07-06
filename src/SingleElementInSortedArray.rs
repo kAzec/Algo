@@ -13,7 +13,6 @@ impl Solution {
         while lo < hi {
             let mid = lo + (hi - lo) / 2;
             if mid == lo {
-                // lo = hi - 1
                 break
             }
 
@@ -35,6 +34,27 @@ impl Solution {
         }
         nums[lo]
     }
+
+    
+    pub fn single_non_duplicate_2(nums: Vec<i32>) -> i32 {
+        let (mut lo, mut hi) = (0, nums.len() - 1);
+        while lo < hi {
+            let mid = lo + (hi - lo) / 2;
+            // mid ^ 1 is:
+            // mid + 1 if mid is even
+            // mid - 1 if mid is odd
+            // [mid, mid ^ 1] always matches the consecutive indices 2*i, 2*i + 1
+            if nums[mid] == nums[mid ^ 1] {
+                // the numbers at the indices are equal,
+                // we are at the left part of the array
+                lo = mid + 1;
+            } else {
+                // On the other hand, we are at the right part of the array
+                hi = mid;
+            }
+        }
+        nums[lo]
+    }
 }
 
 #[cfg(test)]
@@ -47,4 +67,5 @@ mod Tests {
     }
 
     testcase!(single_non_duplicate);
+    testcase!(single_non_duplicate_2);
 }
