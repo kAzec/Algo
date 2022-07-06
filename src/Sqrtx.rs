@@ -14,7 +14,7 @@ impl Solution {
             if div < mid { // n**2 > x, mid too large, not possible
                 hi = mid - 1;
             } else if div > mid { // n**2 < x, mid is possible, but mid - 1 is not
-                if last_lo == mid { break } // last_lo assgined to mid for the second time, jump out dead loop
+                if last_lo == mid { break } // same last_lo assgined to mid for the second time, jump out dead loop
                 lo = mid;
                 last_lo = mid;
             } else { return mid } // n**2 == x, mid is found
@@ -24,6 +24,19 @@ impl Solution {
     }
 
     pub fn my_sqrt_2(x: i32) -> i32 {
+        let (mut lo, mut hi) = (1, x);
+        while lo <= hi {
+            let mid = lo + (hi - lo) / 2;
+            if mid > x / mid {
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
+        }
+        hi
+    }
+
+    pub fn my_sqrt_3(x: i32) -> i32 {
         let (mut ret, lx) = (x as i64, x as i64);
         while ret * ret > lx {
             ret = (ret + lx / ret) / 2;
@@ -45,4 +58,5 @@ mod Tests {
 
     testcase!(my_sqrt);
     testcase!(my_sqrt_2);
+    testcase!(my_sqrt_3);
 }
