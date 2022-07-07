@@ -52,7 +52,7 @@ impl Solution {
                     // Because nums[lo] >= nums[hi] && nums[mid] == nums[hi];
                     assert!(nums[mid] == nums[lo]);
                     // We are not sure the pivot's relative position to mid,
-                    // so narrow the search range by incrementing lo.
+                    // so narrow down the search range by incrementing lo.
                     // We won't miss it because hi is unchanged.
                     lo += 1;
                 }
